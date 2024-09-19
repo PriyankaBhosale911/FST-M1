@@ -1,40 +1,30 @@
-package Project;
+package activities;
 
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.PointerInput;
-import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static java.time.Duration.ofMillis;
-import static activities.ActionBase.doSwipe;
-import static org.openqa.selenium.interactions.PointerInput.MouseButton.LEFT;
-import static org.openqa.selenium.interactions.PointerInput.Origin.viewport;
 
 public class Activity6 {
-    WebDriverWait wait;
+    // Driver Declaration
     AndroidDriver driver;
-    String message;
+    WebDriverWait wait;
+
+    // Set up method
     @BeforeClass
-    public void setup() throws MalformedURLException {
+    public void setUp() throws MalformedURLException {
+        // Desired Capabilities
         UiAutomator2Options options = new UiAutomator2Options();
         options.setPlatformName("android");
         options.setAutomationName("UiAutomator2");
@@ -42,71 +32,49 @@ public class Activity6 {
         options.setAppActivity("com.google.android.apps.chrome.Main");
         options.noReset();
 
-        // Server URL
-        URL serverURL = new URL("http://localhost:4723/wd/hub");
+        // Server Address
+        URL serverUrl = new URL("http://localhost:4723/wd/hub");
 
-        // Driver initialization
-        driver = new AndroidDriver(serverURL, options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-        driver.get("https://v1.training-support.net/selenium");
+        // Driver Initialization
+        driver = new AndroidDriver(serverUrl, options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        // Open the page in Chrome
+        driver.get("https://v1.training-support.net/selenium/lazy-loading");
     }
 
-    @Test(priority = 1)
-    public void testcase1() throws InterruptedException {
-        Dimension dims=driver.manage().window().getSize();
-        Point start=new Point((int)(dims.getWidth()*0.5),(int)(dims.getHeight()*0.8));
-        Point end= new Point((int)(dims.getWidth()*0.3),(int)(dims.getHeight()*0.1));
-        wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.Button[@text='Get Started!']")));
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        boolean b=driver.findElement(AppiumBy.xpath("//android.webkit.WebView[@text='Training Support - Selenium']/android.view.View[2]/android.view.View[3]/android.view.View[19]")).isDisplayed();
-        if(b==true){
-            wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.webkit.WebView[@text='Training Support - Selenium']/android.view.View[2]/android.view.View[3]/android.view.View[19]"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.Button[@text='Sign In ']"))).click();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.EditText[@resource-id='username']"))).sendKeys("admin");
-            wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.EditText[@resource-id='password']"))).sendKeys("password");
-            wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.Button[@text='Log in']"))).click();
-            message=driver.findElement(AppiumBy.xpath("//android.view.View[@resource-id='action-confirmation']")).getText();
-            System.out.println(message);
-            Assert.assertEquals(message,"Welcome Back, admin");
+    // Test method
+    @Test
+    public void chromeTest() {
+        String UiScrollable = "UiScrollable(UiSelector().scrollable(true))";
 
-        }
+        // Wait for page to load
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.className("android.widget.Image")));
 
+        // Find all the image elements on the page
+        List<WebElement> imageElements = driver.findElements(AppiumBy.className("android.widget.Image"));
+
+        // Print the number of images
+        System.out.println("Before scroll: " + imageElements.size());
+
+        // Scroll using UiScrollable
+        driver.findElement(AppiumBy.androidUIAutomator(UiScrollable + ".scrollTextIntoView(\"helen\")"));
+
+        // Get image elements after scroll
+        imageElements = driver.findElements(AppiumBy.className("android.widget.Image"));
+
+        // Print the number of images after scroll
+        System.out.println("After scroll: " + imageElements.size());
+
+        // Assertions
+        Assert.assertEquals(imageElements.size(), 5);
     }
 
-    @Test(priority = 2)
-    public void testcase2() throws InterruptedException, MalformedURLException {
-        setup();
-        Dimension dims=driver.manage().window().getSize();
-        Point start=new Point((int)(dims.getWidth()*0.5),(int)(dims.getHeight()*0.8));
-        Point end= new Point((int)(dims.getWidth()*0.3),(int)(dims.getHeight()*0.1));
-        wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.Button[@text='Get Started!']")));
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        doSwipe(driver,start,end,1916);
-        boolean b=driver.findElement(AppiumBy.xpath("//android.webkit.WebView[@text='Training Support - Selenium']/android.view.View[2]/android.view.View[3]/android.view.View[19]")).isDisplayed();
-        if(b==true){
-            wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.webkit.WebView[@text='Training Support - Selenium']/android.view.View[2]/android.view.View[3]/android.view.View[19]"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.Button[@text='Sign In ']"))).click();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.EditText[@resource-id='username']"))).sendKeys("admin");
-            wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.EditText[@resource-id='password']"))).sendKeys("passwo");
-            wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.Button[@text='Log in']"))).click();
-            message=driver.findElement(AppiumBy.xpath("//android.view.View[@resource-id='action-confirmation']")).getText();
-            System.out.println(message);
-            Assert.assertEquals(message,"Invalid Credentials");
 
-        }
-
-    }
-
-    @AfterTest
-    public void close(){
+    // Tear down method
+    @AfterClass
+    public void tearDown() {
+        // Close the app
         driver.quit();
     }
 }
