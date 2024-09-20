@@ -42,7 +42,7 @@ public class ChromeActivity3 {
         wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.Button[@text='Sign In']")));
         driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Sign In']")).click();
 
-        //Login with invalid Credential error
+        //Login with invalid Credential 
         wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.TextView[@text='Sign In']")));
         driver.findElement(AppiumBy.id("username")).sendKeys("admin");
         driver.findElement(AppiumBy.id("password")).sendKeys("passw0rd");
