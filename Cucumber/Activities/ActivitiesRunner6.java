@@ -13,6 +13,6 @@ import org.junit.runner.RunWith;
         monochrome = true
 )
 
-public class ActivitiesRunner7 {
+public class ActivitiesRunner6 {
     //This is intentionally blank
 }
