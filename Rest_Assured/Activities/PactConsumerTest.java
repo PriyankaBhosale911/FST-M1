@@ -60,9 +60,9 @@ public class PactConsumerTest {
         // Create request body
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", 1);
-        map.put("firstName", "Sayani");
-        map.put("lastName", "Aich");
-        map.put("email", "sayaniaich@test.com");
+        map.put("firstName", "Priyanka");
+        map.put("lastName", "Bhosale");
+        map.put("email", "priyanka.bh@gmail.com");
 
         // Send POST request
         Response response = rq.body(map).post(createUser);
