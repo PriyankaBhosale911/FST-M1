@@ -1,13 +1,11 @@
-package activities;
+package appiumproject;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.nativekey.AndroidKey;
-import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.junit.Assert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -16,63 +14,45 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
-public class Activity5 {
-    // Driver Declaration
+public class ChromeActivity3 {
     AndroidDriver driver;
     WebDriverWait wait;
 
-    // Set up method
     @BeforeClass
-    public void setUp() throws MalformedURLException {
-        // Desired Capabilities
-        UiAutomator2Options options = new UiAutomator2Options();
+    public void setup() throws MalformedURLException {
+        UiAutomator2Options options= new UiAutomator2Options();
         options.setPlatformName("android");
         options.setAutomationName("UiAutomator2");
-        options.setAppPackage("com.google.android.apps.messaging");
-        options.setAppActivity(".ui.ConversationListActivity");
+        options.setAppPackage("com.android.chrome");
+        options.setAppActivity("org.chromium.chrome.browser.ChromeTabbedActivity");
         options.noReset();
 
-        // Server Address
-        URL serverURL = new URL("http://localhost:4723/wd/hub");
-
-        // Driver Initialization
-        driver = new AndroidDriver(serverURL, options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        URL serverURL= new URL("http://localhost:4723/");
+        driver= new AndroidDriver(serverURL, options);
+        wait= new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.get("https://v1.training-support.net/selenium");
     }
 
-    // Test method
     @Test
-    public void smsTest() {
-        // Find and click the add button
-        driver.findElement(AppiumBy.accessibilityId("Start new conversation")).click();
+    public void chromeTest(){
+        String UiScrollable = "UiScrollable(UiSelector().scrollable(true))";
+        //wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.androidUIAutomator(UiScrollable+ ".scrollTextIntoView(\"To-Do List\")")));
+        driver.findElement(AppiumBy.androidUIAutomator(UiScrollable+ ".scrollTextIntoView(\"Popups\")"));
+        driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text='Popups']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.Button[@text='Sign In']")));
+        driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Sign In']")).click();
 
-        // Wait for elements to load
-        wait.until(ExpectedConditions.elementToBeClickable(
-                AppiumBy.id("recipient_text_view")
-        ));
-
-        // Find the element to add recipient
-        driver.findElement(AppiumBy.id("recipient_text_view")).sendKeys("9014842678");
-        // Press ENTER
-        driver.pressKey(new KeyEvent().withKey(AndroidKey.ENTER));
-
-        // Wait for textbox to appear
-        wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.id("compose_message_text")));
-
-        // Enter text to send
-        driver.findElement(AppiumBy.id("compose_message_text")).sendKeys("Hello from Appium");
-        // Press Send
-        driver.findElement(AppiumBy.accessibilityId("Send SMS")).click();
-
-        // Assertion
-        String messageTextSent = driver.findElement(AppiumBy.id("message_text")).getText();
-        Assert.assertEquals(messageTextSent, "Hello from Appium");
-    }
-
-    // Tear down method
+        //Login with invalid Credential error
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.TextView[@text='Sign In']")));
+        driver.findElement(AppiumBy.id("username")).sendKeys("admin");
+        driver.findElement(AppiumBy.id("password")).sendKeys("passw0rd");
+        driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Log in']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.id("action-confirmation")));
+        String loginConfirmation= driver.findElement(AppiumBy.id("action-confirmation")).getText();
+        Assert.assertEquals(loginConfirmation, "Invalid Credentials");
+    
     @AfterClass
-    public void tearDown() {
-        // Close the app
+    public void tearDown(){
         driver.quit();
     }
 }
