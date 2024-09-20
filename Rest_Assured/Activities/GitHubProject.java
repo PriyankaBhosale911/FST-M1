@@ -28,7 +28,7 @@ public class GitHubProject {
         requestSpec = new RequestSpecBuilder().
                 setBaseUri("https://api.github.com/user/keys").
                 addHeader("Content-Type", "application/json").
-                        setAuth(oauth2("ghp_YNiEr0MIK2zttbNH2JzR7hs1riiYOf8hOe4N")).
+                        setAuth(oauth2("ghp_YNiEr0NUE2zttbNH2JzR7hs1riwYOf8rOe4N")).
                 build();
 
         responseSpec = new ResponseSpecBuilder().
