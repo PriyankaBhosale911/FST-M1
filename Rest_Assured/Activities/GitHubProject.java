@@ -21,7 +21,7 @@ public class GitHubProject {
     RequestSpecification requestSpec;
     ResponseSpecification responseSpec;
     int keyId;
-    String sshKey="ssh-ed25619 AAAAC3NzaC1lZDI1NAB5AAAAIBxnLGB/zmA+xgzBR/woERD7Uf1FK4Bos9xRh4nzI2av";
+    String sshKey="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHb7+WtqHiXOyrDH1mRTzioIOyuURDe4NvuGUppwU2OB";
 
     @BeforeClass
     public void setup(){
