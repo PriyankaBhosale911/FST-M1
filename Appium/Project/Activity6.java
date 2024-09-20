@@ -1,12 +1,11 @@
-package activities;
+package appiumproject;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.junit.Assert;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,67 +13,46 @@ import org.testng.annotations.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.List;
 
-public class Activity6 {
-    // Driver Declaration
+public class ChromeActivity3 {
     AndroidDriver driver;
     WebDriverWait wait;
 
-    // Set up method
     @BeforeClass
-    public void setUp() throws MalformedURLException {
-        // Desired Capabilities
-        UiAutomator2Options options = new UiAutomator2Options();
+    public void setup() throws MalformedURLException {
+        UiAutomator2Options options= new UiAutomator2Options();
         options.setPlatformName("android");
         options.setAutomationName("UiAutomator2");
         options.setAppPackage("com.android.chrome");
-        options.setAppActivity("com.google.android.apps.chrome.Main");
+        options.setAppActivity("org.chromium.chrome.browser.ChromeTabbedActivity");
         options.noReset();
 
-        // Server Address
-        URL serverUrl = new URL("http://localhost:4723/wd/hub");
-
-        // Driver Initialization
-        driver = new AndroidDriver(serverUrl, options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        // Open the page in Chrome
-        driver.get("https://v1.training-support.net/selenium/lazy-loading");
+        URL serverURL= new URL("http://localhost:4723/");
+        driver= new AndroidDriver(serverURL, options);
+        wait= new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.get("https://v1.training-support.net/selenium");
     }
 
-    // Test method
     @Test
-    public void chromeTest() {
+    public void chromeTest(){
         String UiScrollable = "UiScrollable(UiSelector().scrollable(true))";
+        //wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.androidUIAutomator(UiScrollable+ ".scrollTextIntoView(\"To-Do List\")")));
+        driver.findElement(AppiumBy.androidUIAutomator(UiScrollable+ ".scrollTextIntoView(\"Popups\")"));
+        driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text='Popups']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath("//android.widget.Button[@text='Sign In']")));
+        driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Sign In']")).click();
 
-        // Wait for page to load
-        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.className("android.widget.Image")));
-
-        // Find all the image elements on the page
-        List<WebElement> imageElements = driver.findElements(AppiumBy.className("android.widget.Image"));
-
-        // Print the number of images
-        System.out.println("Before scroll: " + imageElements.size());
-
-        // Scroll using UiScrollable
-        driver.findElement(AppiumBy.androidUIAutomator(UiScrollable + ".scrollTextIntoView(\"helen\")"));
-
-        // Get image elements after scroll
-        imageElements = driver.findElements(AppiumBy.className("android.widget.Image"));
-
-        // Print the number of images after scroll
-        System.out.println("After scroll: " + imageElements.size());
-
-        // Assertions
-        Assert.assertEquals(imageElements.size(), 5);
+        //login page with correct credential
+        driver.findElement(AppiumBy.id("username")).sendKeys("admin");
+        driver.findElement(AppiumBy.id("password")).sendKeys("password");
+        driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Log in']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.id("action-confirmation")));
+        loginConfirmation= driver.findElement(AppiumBy.id("action-confirmation")).getText();
+        Assert.assertEquals(loginConfirmation, "Welcome Back, admin");
     }
 
-
-    // Tear down method
     @AfterClass
-    public void tearDown() {
-        // Close the app
+    public void tearDown(){
         driver.quit();
     }
 }
