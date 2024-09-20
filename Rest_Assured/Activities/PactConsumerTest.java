@@ -33,9 +33,9 @@ public class PactConsumerTest {
         // Create request and response JSON
         DslPart requestResponseBody = new PactDslJsonBody()
                 .numberType("id", 1)
-                .stringType("firstName", "Sayani")
-                .stringType("lastName", "Aich")
-                .stringType("email", "sayaniaich@test.com");
+                .stringType("firstName", "Priyanka")
+                .stringType("lastName", "Bhosale")
+                .stringType("email", "priyanka.bh@gmail.com");
         // Create rules for request and response
         return builder.given("A request to create a user")
                 .uponReceiving("A request to create a user")
