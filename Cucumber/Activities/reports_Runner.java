@@ -5,13 +5,13 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-/*@CucumberOptions(
+@CucumberOptions(
         features = "src/test/java/Features",
         glue = {"stepDefinitions"},
         tags = "@SmokeTest",
         plugin = {"pretty"},
         monochrome = true
-)*/
+)
 /*@CucumberOptions(
         features = "src/test/java/Features",
         glue = {"stepDefinitions"},
@@ -20,12 +20,13 @@ import io.cucumber.junit.CucumberOptions;
         monochrome = true
 )*/
 
-@CucumberOptions(
+/*@CucumberOptions(
         features = "src/test/java/Features",
         glue = {"stepDefinitions"},
         tags = "@SimpleAlert",
         plugin = {"json: test-reports/json-report.json"},
         monochrome = true
 )
-public class reports_Runner {
+*/
+        public class reports_Runner {
 }
